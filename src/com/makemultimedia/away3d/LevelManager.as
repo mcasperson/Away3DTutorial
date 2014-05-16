@@ -57,11 +57,9 @@ package com.makemultimedia.away3d
 		}
 		
 		public function startLevel1():void {
-			var elevation1:LevelBackgroundElevation = new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland());
-			var elevation2:LevelBackgroundElevation = new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland());
-			
-			elevations.push(elevation1);
-			elevations.push(elevation2);
+		
+			elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
+			elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
 			
 			var accumulatedHeight = middleBottom.y;
 			
@@ -71,7 +69,7 @@ package com.makemultimedia.away3d
 				elevation.MyElevation.z = ELEVATION_DIST;
 			});	
 			
-			highestElevation = elevation2;
+			highestElevation = elevations[elevations.length - 1];
 		}
 		
 	}

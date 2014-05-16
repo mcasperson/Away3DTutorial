@@ -32,13 +32,13 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Matthew\Dropbox\Development\Projects\Away3D\src</path-element>
-      <path-element>C:\Users\Matthew\Dropbox\Development\Projects\Away3D\lib\away3d-core-fp11-4.1.6\src</path-element>
+      <path-element>C:\Users\Matthew\Documents\GitHub\Away3DTutorial\src</path-element>
+      <path-element>C:\Users\Matthew\Documents\GitHub\Away3DTutorial\lib\away3d-core-fp11-4.1.6\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Matthew\Dropbox\Development\Projects\Away3D\src\com\makemultimedia\away3d\EngineManager.as</path-element>
+    <path-element>C:\Users\Matthew\Documents\GitHub\Away3DTutorial\src\com\makemultimedia\away3d\EngineManager.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>
