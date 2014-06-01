@@ -1,4 +1,4 @@
-package com.makemultimedia.away3d 
+package com.makemultimedia.away3d.Manager 
 {
 	/**
 	 * ...
@@ -17,8 +17,7 @@ package com.makemultimedia.away3d
 		public function startLevel():void {
 			var levelManager:LevelManager = new LevelManager(engineManager, this);
 			levelManager.startLevel1();
-		}
-		
+		}		
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.makemultimedia.away3d 
+package com.makemultimedia.away3d.Manager 
 {
 	import away3d.extrusions.Elevation;
 	import away3d.extrusions.SkinExtrude;
@@ -15,16 +15,22 @@ package com.makemultimedia.away3d
 	 */
 	public class ResourceManager 
 	{
-		[Embed(source="../../../../media/SpaceFighter01.3ds", mimeType="application/octet-stream")]
+		[Embed(source="media/SpaceFighter01.3ds", mimeType="application/octet-stream")]
 		public static var SpaceFighter01Model:Class;
 		
-		[Embed(source="../../../../media/F01_512.jpg")]
+		[Embed(source="media/F01_512.jpg")]
 		public static var SpaceFighter01Texture:Class;
 		
-		[Embed(source="../../../../media/island_texture.jpg")]
+		[Embed(source="media/Shuttle01.3ds", mimeType="application/octet-stream")]
+		public static var Shuttle01Model:Class;
+		
+		[Embed(source="media/S01_512.jpg")]
+		public static var Shuttle01Texture:Class;
+		
+		[Embed(source="media/island_texture.jpg")]
 		public static var IslandTexture:Class;
 		
-		[Embed(source="../../../../media/island_height.gif")]
+		[Embed(source="media/island_height.gif")]
 		public static var IslandHeight:Class;
 		
 		public function ResourceManager() 
@@ -39,6 +45,16 @@ package com.makemultimedia.away3d
 			loader.rotationX = -90;
 			loader.scale(0.2);
 			loader.loadData(new SpaceFighter01Model(), assetLoaderContext, null, new Max3DSParser(false));
+			return loader;
+		}
+		
+		public static function LoadShuttle01():Loader3D  {
+			var assetLoaderContext:AssetLoaderContext = new AssetLoaderContext();
+			assetLoaderContext.mapUrlToData("S01_512.JPG", new Shuttle01Texture());
+			var loader:Loader3D = new Loader3D();
+			loader.rotationX = -90;
+			loader.scale(0.2);
+			loader.loadData(new Shuttle01Model(), assetLoaderContext, null, new Max3DSParser(false));
 			return loader;
 		}
 		

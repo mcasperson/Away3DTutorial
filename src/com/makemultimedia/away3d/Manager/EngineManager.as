@@ -1,4 +1,4 @@
-package com.makemultimedia.away3d 
+package com.makemultimedia.away3d.Manager 
 {
 	import away3d.containers.View3D;
 	import flash.desktop.NativeApplication;

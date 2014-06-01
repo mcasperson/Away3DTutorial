@@ -1,7 +1,9 @@
-package com.makemultimedia.away3d 
+package com.makemultimedia.away3d.GameElement 
 {
 	import away3d.core.math.Vector3DUtils;
 	import away3d.loaders.Loader3D;
+	import com.makemultimedia.away3d.Manager.EngineManager;
+	import com.makemultimedia.away3d.Manager.ResourceManager;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Vector3D;
