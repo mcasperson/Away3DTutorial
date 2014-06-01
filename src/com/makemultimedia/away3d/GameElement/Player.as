@@ -2,6 +2,7 @@ package com.makemultimedia.away3d.GameElement
 {
 	import away3d.core.math.Vector3DUtils;
 	import away3d.loaders.Loader3D;
+	import com.makemultimedia.away3d.Destroyable;
 	import com.makemultimedia.away3d.Manager.EngineManager;
 	import com.makemultimedia.away3d.Manager.ResourceManager;
 	import flash.events.MouseEvent;
@@ -11,7 +12,7 @@ package com.makemultimedia.away3d.GameElement
 	 * ...
 	 * @author Matthew Casperson
 	 */
-	public class Player 
+	public class Player implements Destroyable
 	{
 		private static const MOVEMENT_SPEED:Number = 3;
 		private var engineManager:EngineManager;
@@ -29,7 +30,7 @@ package com.makemultimedia.away3d.GameElement
 			engineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
-		public function destory():void {
+		public function destroy():void {
 			engineManager.View.scene.removeChild(model);
 		}
 		

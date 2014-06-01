@@ -48,14 +48,14 @@ package com.makemultimedia.away3d.Manager
 		}
 		
 		public function destroy():void {
-			player.destory();
+			player.destroy();
 			player = null;
 			level.destroy();
 			level = null;
 		}
 		
 		public function startLevel1():void {
-			level = new Level(engineManager, middleBottom, ELEVATION_DIST, function(Elevations:Vector.<LevelBackgroundElevation>) {
+			level = new Level(engineManager, middleBottom, ELEVATION_DIST, function(Elevations:Vector.<LevelBackgroundElevation>):void {
 				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
 				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
 			});
