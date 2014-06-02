@@ -2,12 +2,18 @@ package com.makemultimedia.away3d.GameElement
 {
 	import away3d.bounds.BoundingSphere;
 	import away3d.core.math.Vector3DUtils;
+	import away3d.core.partition.MeshNode;
+	import away3d.entities.Mesh;
 	import away3d.loaders.Loader3D;
+	import away3d.materials.ColorMaterial;
+	import away3d.primitives.SphereGeometry;
+	import away3d.tools.utils.Bounds;
 	import com.makemultimedia.away3d.Destroyable;
 	import com.makemultimedia.away3d.Manager.CollisionManager;
 	import com.makemultimedia.away3d.Manager.CollisionTypes;
 	import com.makemultimedia.away3d.Manager.EngineManager;
 	import com.makemultimedia.away3d.Manager.ResourceManager;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TouchEvent;
 	import flash.geom.Vector3D;
@@ -27,22 +33,34 @@ package com.makemultimedia.away3d.GameElement
 		{
 			this.engineManager = engineManager;
 			this.collisionManager = collisionManager;
+			this.boundingSphere = new BoundingSphere();
 			
 			collisionManager.addCollider(this);
 			
 			model = ResourceManager.loadSpaceFighter01();	
 			engineManager.View.scene.addChild(model);
-			
-			this.boundingSphere = new BoundingSphere();
-			
+							
+			engineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			engineManager.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			engineManager.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			engineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			engineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
+		}
+		
+		private function onEnterFrame(event:Event):void {
+			if (model.numChildren !== 0) {
+				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+				boundingSphere.fromSphere(model.position, (Bounds.width / 2 + Bounds.height / 2) / 2);
+			}
 		}
 		
 		public function destroy():void {
 			engineManager.View.scene.removeChild(model);
 			collisionManager.removeCollider(this);
+			
+			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			engineManager.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			engineManager.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			engineManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
 		private function onMouseDown(event:MouseEvent):void { 
@@ -65,8 +83,7 @@ package com.makemultimedia.away3d.GameElement
 			return CollisionTypes.PLAYER_COLLISION_TYPE;
 		}
 		
-		public function get collisionSphere():BoundingSphere {
-			boundingSphere.fromSphere(model.position, Math.max(model.maxX - model.minX, model.maxY - model.minY, model.maxZ - model.minZ));
+		public function get collisionSphere():BoundingSphere {					
 			return boundingSphere;
 		}
 		

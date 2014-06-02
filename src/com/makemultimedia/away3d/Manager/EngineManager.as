@@ -36,8 +36,9 @@ package com.makemultimedia.away3d.Manager
 			stage.addEventListener(Event.RESIZE, onResize);
 			onResize();
 			
-			collisionManager = new CollisionManager(this);
+			collisionManager = new CollisionManager(this, true);
 			collisionManager.mapCollision(CollisionTypes.ENEMY_COLLISION_TYPE, CollisionTypes.PLAYER_COLLISION_TYPE);
+			collisionManager.mapCollision(CollisionTypes.ENEMY_COLLISION_TYPE, CollisionTypes.PLAYER_PROJECTILE_COLLISION_TYPE);
 			
 			gameManager = new GameManager(this, collisionManager);
 			gameManager.startLevel();
