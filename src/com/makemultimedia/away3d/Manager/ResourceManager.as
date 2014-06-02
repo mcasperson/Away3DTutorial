@@ -38,7 +38,7 @@ package com.makemultimedia.away3d.Manager
 			
 		}
 		
-		public static function LoadSpaceFighter01():Loader3D  {
+		public static function loadSpaceFighter01():Loader3D  {
 			var assetLoaderContext:AssetLoaderContext = new AssetLoaderContext();
 			assetLoaderContext.mapUrlToData("F01_512.JPG", new SpaceFighter01Texture());
 			var loader:Loader3D = new Loader3D();
@@ -48,7 +48,7 @@ package com.makemultimedia.away3d.Manager
 			return loader;
 		}
 		
-		public static function LoadShuttle01():Loader3D  {
+		public static function loadShuttle01():Loader3D  {
 			var assetLoaderContext:AssetLoaderContext = new AssetLoaderContext();
 			assetLoaderContext.mapUrlToData("S01_512.JPG", new Shuttle01Texture());
 			var loader:Loader3D = new Loader3D();
@@ -58,7 +58,7 @@ package com.makemultimedia.away3d.Manager
 			return loader;
 		}
 		
-		public static function LoadIsland():Elevation {		
+		public static function loadIsland():Elevation {		
 			var heightmap:BitmapData = Cast.bitmapData(IslandHeight);
 			 
 			// create the material to be applied to the terrain

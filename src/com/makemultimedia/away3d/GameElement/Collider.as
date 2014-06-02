@@ -7,9 +7,9 @@ package com.makemultimedia.away3d.GameElement
 	 */
 	public interface Collider 
 	{		
-		function get CollisionType():int; 
-		function get CollisionSphere():BoundingSphere;
-		function Collision(otherCollider:Collider):void;		
+		function get collisionType():int; 
+		function get collisionSphere():BoundingSphere;
+		function collision(otherCollider:Collider):void;		
 	}
 
 }

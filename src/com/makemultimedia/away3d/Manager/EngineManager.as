@@ -16,6 +16,7 @@ package com.makemultimedia.away3d.Manager
 	{
 		private var view:View3D;
 		private var gameManager:GameManager;
+		private var collisionManager:CollisionManager;
 		
 		public function get View():View3D {
 			return view;
@@ -35,9 +36,10 @@ package com.makemultimedia.away3d.Manager
 			stage.addEventListener(Event.RESIZE, onResize);
 			onResize();
 			
-			trace("EngineManager");
+			collisionManager = new CollisionManager(this);
+			collisionManager.mapCollision(CollisionTypes.ENEMY_COLLISION_TYPE, CollisionTypes.PLAYER_COLLISION_TYPE);
 			
-			gameManager = new GameManager(this);
+			gameManager = new GameManager(this, collisionManager);
 			gameManager.startLevel();
 		}	
 		

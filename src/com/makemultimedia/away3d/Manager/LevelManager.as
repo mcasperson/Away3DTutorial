@@ -19,15 +19,17 @@ package com.makemultimedia.away3d.Manager
 		private static const SCROLL_SPEED:Number = 3;
 		private var player:Player;
 		private var engineManager:EngineManager;
+		private var collisionManager:CollisionManager;
 		private var gameManager:GameManager;
 		private var level:Level;
 		private var middleBottom:Vector3D;			
 		
-		public function LevelManager(engineManager:EngineManager, gameManager:GameManager) 
+		public function LevelManager(engineManager:EngineManager, collisionManager:CollisionManager, gameManager:GameManager) 
 		{
 			this.gameManager = gameManager;
+			this.collisionManager = collisionManager;
 			this.engineManager = engineManager;
-			this.player = new Player(engineManager);	
+			this.player = new Player(engineManager, collisionManager);	
 			this.middleBottom = engineManager.View.camera.unproject(0, 1, ELEVATION_DIST - engineManager.View.camera.z);
 			
 			engineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);			
@@ -56,8 +58,8 @@ package com.makemultimedia.away3d.Manager
 		
 		public function startLevel1():void {
 			level = new Level(engineManager, middleBottom, ELEVATION_DIST, function(Elevations:Vector.<LevelBackgroundElevation>):void {
-				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
-				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.LoadIsland()));
+				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.loadIsland()));
+				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.loadIsland()));
 			});
 		}
 		
