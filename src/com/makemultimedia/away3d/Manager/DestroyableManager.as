@@ -7,11 +7,11 @@ package com.makemultimedia.away3d.Manager
 	 * ...
 	 * @author Matthew Casperson
 	 */
-	public class EnemyManager implements Destroyable
+	public class DestroyableManager implements Destroyable
 	{		
-		private var enemies:LinkedList;
+		private var destroyableObjects:LinkedList;
 		
-		public function EnemyManager() 
+		public function DestroyableManager() 
 		{
 			this.enemies = new LinkedList();
 		}

@@ -3,6 +3,7 @@ package com.makemultimedia.away3d.Level
 	import away3d.extrusions.Elevation;
 	import com.makemultimedia.away3d.Destroyable;
 	import com.makemultimedia.away3d.Manager.EngineManager;
+	import com.makemultimedia.away3d.Manager.LevelManager;
 	/**
 	 * ...
 	 * @author Matthew Casperson
@@ -11,20 +12,26 @@ package com.makemultimedia.away3d.Level
 	{	
 		private var elevation:Elevation;
 		private var engineManager:EngineManager;
+		private var levelManager:LevelManager;
 		
 		public function get MyElevation():Elevation {
 			return elevation;
 		}
 		
-		public function LevelBackgroundElevation(engineManager:EngineManager, elevation:Elevation) 
+		public function LevelBackgroundElevation(engineManager:EngineManager, levelManager:LevelManager, elevation:Elevation) 
 		{
 			this.engineManager = engineManager;
-			this.elevation = elevation;			
+			this.levelManager = levelManager;
+			this.elevation = elevation;		
+			
+			levelManager.addDestroyable(this);
+			
 			engineManager.View.scene.addChild(elevation);		
 		}
 		
 		public function destroy():void
 		{
+			levelManager.removeDestroyable(this);
 			engineManager.View.scene.removeChild(elevation);
 		}
 		

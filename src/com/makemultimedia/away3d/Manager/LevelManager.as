@@ -10,6 +10,7 @@ package com.makemultimedia.away3d.Manager
 	import com.makemultimedia.away3d.Level.LevelBackgroundElevation;
 	import flash.events.Event;
 	import flash.geom.Vector3D;
+	import org.as3commons.collections.LinkedList;
 	/**
 	 * ...
 	 * @author Matthew Casperson
@@ -23,19 +24,21 @@ package com.makemultimedia.away3d.Manager
 		private var engineManager:EngineManager;
 		private var collisionManager:CollisionManager;
 		private var gameManager:GameManager;
-		private var enemyManager:EnemyManager;
 		private var level:Level;
 		private var middleBottom:Vector3D;	
 		private var middleTop:Vector3D;
 		private var timeUntilNextEnemy:int;
+		private var destroyableObjects:LinkedList;
 		
 		public function LevelManager(engineManager:EngineManager, collisionManager:CollisionManager, gameManager:GameManager) 
 		{
 			this.gameManager = gameManager;
 			this.collisionManager = collisionManager;
 			this.engineManager = engineManager;
-			this.enemyManager = new EnemyManager();
-			this.player = new Player(engineManager, collisionManager);	
+			
+			this.destroyableObjects = new LinkedList();
+			
+			this.player = new Player(engineManager, this, collisionManager);	
 			this.middleBottom = engineManager.View.camera.unproject(0, 1, ELEVATION_DIST - engineManager.View.camera.z);
 			this.middleTop = engineManager.View.camera.unproject(0, -1, ELEVATION_DIST - engineManager.View.camera.z);
 			this.timeUntilNextEnemy = new Date().getTime();
@@ -59,25 +62,39 @@ package com.makemultimedia.away3d.Manager
 			var now:int = new Date().getTime();
 			if (now - timeUntilNextEnemy > ENEMY_CREATE_DELAY) {
 				timeUntilNextEnemy = now;
-				new Enemy(engineManager, collisionManager, enemyManager, middleTop);
+				new Enemy(engineManager, collisionManager, this, middleTop);
 			}
 		}
 		
-		public function destroy():void {
-			player.destroy();
-			player = null;
-			level.destroy();
-			level = null;
-			enemyManager.destroy();
-			enemyManager = null;
+		public function destroy():void {		
+			while (destroyableObjects.size !== 0) {
+				(destroyableObjects.first as Destroyable).destroy();
+			}
+			
 			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
+		public function addDestroyable(destroyable:Destroyable):void {
+			destroyableObjects.add(destroyable);
+		}
+		
+		public function removeDestroyable(destroyable:Destroyable):void {
+			destroyableObjects.remove(destroyable);
+		}
+		
 		public function startLevel1():void {
-			level = new Level(engineManager, middleBottom, ELEVATION_DIST, function(Elevations:Vector.<LevelBackgroundElevation>):void {
-				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.loadIsland()));
-				Elevations.push(new LevelBackgroundElevation(engineManager, ResourceManager.loadIsland()));
-			});
+			level = new Level(
+				engineManager, 
+				this, 
+				middleBottom, 
+				ELEVATION_DIST, 
+				function(me:LevelManager):Function {
+					return function(Elevations:Vector.<LevelBackgroundElevation>):void {
+						Elevations.push(new LevelBackgroundElevation(engineManager, me, ResourceManager.loadIsland()));
+						Elevations.push(new LevelBackgroundElevation(engineManager, me, ResourceManager.loadIsland()));
+					}
+				}(this)
+			);
 		}
 		
 	}

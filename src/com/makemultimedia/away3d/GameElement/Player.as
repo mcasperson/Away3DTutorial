@@ -13,6 +13,7 @@ package com.makemultimedia.away3d.GameElement
 	import com.makemultimedia.away3d.Manager.CollisionManager;
 	import com.makemultimedia.away3d.Manager.CollisionTypes;
 	import com.makemultimedia.away3d.Manager.EngineManager;
+	import com.makemultimedia.away3d.Manager.LevelManager;
 	import com.makemultimedia.away3d.Manager.ResourceManager;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -27,17 +28,20 @@ package com.makemultimedia.away3d.GameElement
 		private static const MOVEMENT_SPEED:Number = 3;
 		private var engineManager:EngineManager;
 		private var collisionManager:CollisionManager;
+		private var levelManager:LevelManager;
 		private var model:Loader3D;
 		private var boundingSphere:BoundingSphere;
 		private var radius:Number;
 		
-		public function Player(engineManager:EngineManager, collisionManager:CollisionManager) 
+		public function Player(engineManager:EngineManager, levelManager:LevelManager, collisionManager:CollisionManager) 
 		{
 			this.engineManager = engineManager;
 			this.collisionManager = collisionManager;
+			this.levelManager = levelManager;
 			this.boundingSphere = new BoundingSphere();
 			
 			collisionManager.addCollider(this);
+			levelManager.addDestroyable(this);
 			
 			model = ResourceManager.loadSpaceFighter01(function(event:AssetEvent):void {
 				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
@@ -58,6 +62,7 @@ package com.makemultimedia.away3d.GameElement
 		public function destroy():void {
 			engineManager.View.scene.removeChild(model);
 			collisionManager.removeCollider(this);
+			levelManager.removeDestroyable(this);
 			
 			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			engineManager.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);

@@ -2,6 +2,7 @@ package com.makemultimedia.away3d.Level
 {
 	import com.makemultimedia.away3d.Destroyable;
 	import com.makemultimedia.away3d.Manager.EngineManager;
+	import com.makemultimedia.away3d.Manager.LevelManager;
 	import flash.geom.Vector3D;
 	/**
 	 * ...
@@ -9,9 +10,10 @@ package com.makemultimedia.away3d.Level
 	 */
 	public class Level implements Destroyable 
 	{				
-		private var elevations:Vector.<LevelBackgroundElevation> = new Vector.<LevelBackgroundElevation>();
+		private var elevations:Vector.<LevelBackgroundElevation>;
 		private var highestElevation:LevelBackgroundElevation;
 		private var engineManager:EngineManager;
+		private var levelManager:LevelManager;
 		
 		public function get Elevations():Vector.<LevelBackgroundElevation> {
 			return elevations;
@@ -29,8 +31,12 @@ package com.makemultimedia.away3d.Level
 			this.highestElevation = highestElevation;
 		}
 		
-		public function Level(engineManager:EngineManager, middleBottom:Vector3D, elevationDistance:Number, initialiseElevations:Function) {
+		public function Level(engineManager:EngineManager, levelManager:LevelManager, middleBottom:Vector3D, elevationDistance:Number, initialiseElevations:Function) {
 			this.engineManager = engineManager;
+			this.levelManager = levelManager;
+			this.elevations = new Vector.<LevelBackgroundElevation>(); 
+			
+			levelManager.addDestroyable(this);
 			
 			initialiseElevations(Elevations);
 			
@@ -46,9 +52,7 @@ package com.makemultimedia.away3d.Level
 		}
 		
 		public function destroy():void {
-			Elevations.forEach(function (elevation:LevelBackgroundElevation, index:int, vector:Vector.<LevelBackgroundElevation>):void {
-				elevation.destroy();
-			});
+			levelManager.removeDestroyable(this);
 			Elevations = null;
 		}
 	}

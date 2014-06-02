@@ -11,7 +11,7 @@ package com.makemultimedia.away3d.GameElement
 	import com.makemultimedia.away3d.Manager.CollisionManager;
 	import com.makemultimedia.away3d.Manager.CollisionTypes;
 	import com.makemultimedia.away3d.Manager.EngineManager;
-	import com.makemultimedia.away3d.Manager.EnemyManager;
+	import com.makemultimedia.away3d.Manager.LevelManager;
 	import com.makemultimedia.away3d.Manager.ResourceManager;
 	import flash.events.Event;
 	import flash.geom.Vector3D;
@@ -25,27 +25,28 @@ package com.makemultimedia.away3d.GameElement
 		private static const X_AXIS_VARIATION:Number = 200;
 		private var engineManager:EngineManager;
 		private var collisionManager:CollisionManager;
-		private var enemyManager:EnemyManager;
+		private var levelManager:LevelManager;
 		private var model:Loader3D;
 		private var boundingSphere:BoundingSphere;
 		private var removeInNextUpdate:Boolean;		
 		private var radius:Number;
 		
-		public function Enemy(engineManager:EngineManager, collisionManager:CollisionManager, enemyManager:EnemyManager, topOfScene:Vector3D) {
+		public function Enemy(engineManager:EngineManager, collisionManager:CollisionManager, levelManager:LevelManager, topOfScene:Vector3D) {
 			this.engineManager = engineManager;
 			this.collisionManager = collisionManager;
-			this.enemyManager = enemyManager;
+			this.levelManager = levelManager;
 			this.boundingSphere = new BoundingSphere();
 			this.removeInNextUpdate = false;
 			
 			model = ResourceManager.loadShuttle01(function(event:AssetEvent):void {
-				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+				//Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+				Bounds.getMeshBounds(Mesh(event.asset));
 				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
 			});	
 			engineManager.View.scene.addChild(model);
 			
 			collisionManager.addCollider(this);
-			enemyManager.addEnemy(this);
+			levelManager.addDestroyable(this);
 			
 			engineManager.View.scene.addChild(model);
 			
@@ -68,7 +69,7 @@ package com.makemultimedia.away3d.GameElement
 			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 			engineManager.View.scene.removeChild(model);			
 			collisionManager.removeCollider(this);
-			enemyManager.removeEnemy(this);
+			levelManager.removeDestroyable(this);
 		}
 		
 		public function get collisionType():int {
@@ -81,6 +82,7 @@ package com.makemultimedia.away3d.GameElement
 		
 		public function collision(other:Collider):void {
 			removeInNextUpdate = true;
+			new Explosion(engineManager, levelManager, model.position);
 		}
 		
 	}

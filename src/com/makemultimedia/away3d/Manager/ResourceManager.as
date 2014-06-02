@@ -16,21 +16,45 @@ package com.makemultimedia.away3d.Manager
 	 */
 	public class ResourceManager 
 	{
+		/**
+		 * http://opengameart.org/content/explosion
+		 */
+		[Embed(source="media/explosion.png")]
+		public static var Explosion:Class;
+		
+		/**
+		 * http://3drt.com/store/free-downloads/
+		 */
 		[Embed(source="media/SpaceFighter01.3ds", mimeType="application/octet-stream")]
 		public static var SpaceFighter01Model:Class;
 		
+		/**
+		 * http://3drt.com/store/free-downloads/
+		 */
 		[Embed(source="media/F01_512.jpg")]
 		public static var SpaceFighter01Texture:Class;
 		
+		/**
+		 * http://3drt.com/store/free-downloads/
+		 */
 		[Embed(source="media/Shuttle01.3ds", mimeType="application/octet-stream")]
 		public static var Shuttle01Model:Class;
 		
+		/**
+		 * http://3drt.com/store/free-downloads/
+		 */
 		[Embed(source="media/S01_512.jpg")]
 		public static var Shuttle01Texture:Class;
 		
+		/**
+		 * http://www.toymaker.info/html/texgen.html
+		 */
 		[Embed(source="media/island_texture.jpg")]
 		public static var IslandTexture:Class;
 		
+		/**
+		 * http://www.toymaker.info/html/texgen.html
+		 */
 		[Embed(source="media/island_height.gif")]
 		public static var IslandHeight:Class;
 		
