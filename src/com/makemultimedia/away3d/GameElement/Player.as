@@ -4,6 +4,7 @@ package com.makemultimedia.away3d.GameElement
 	import away3d.core.math.Vector3DUtils;
 	import away3d.core.partition.MeshNode;
 	import away3d.entities.Mesh;
+	import away3d.events.AssetEvent;
 	import away3d.loaders.Loader3D;
 	import away3d.materials.ColorMaterial;
 	import away3d.primitives.SphereGeometry;
@@ -28,6 +29,7 @@ package com.makemultimedia.away3d.GameElement
 		private var collisionManager:CollisionManager;
 		private var model:Loader3D;
 		private var boundingSphere:BoundingSphere;
+		private var radius:Number;
 		
 		public function Player(engineManager:EngineManager, collisionManager:CollisionManager) 
 		{
@@ -37,7 +39,10 @@ package com.makemultimedia.away3d.GameElement
 			
 			collisionManager.addCollider(this);
 			
-			model = ResourceManager.loadSpaceFighter01();	
+			model = ResourceManager.loadSpaceFighter01(function(event:AssetEvent):void {
+				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
+			});	
 			engineManager.View.scene.addChild(model);
 							
 			engineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -47,10 +52,7 @@ package com.makemultimedia.away3d.GameElement
 		}
 		
 		private function onEnterFrame(event:Event):void {
-			if (model.numChildren !== 0) {
-				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
-				boundingSphere.fromSphere(model.position, (Bounds.width / 2 + Bounds.height / 2) / 2);
-			}
+			boundingSphere.fromSphere(model.position, radius);
 		}
 		
 		public function destroy():void {

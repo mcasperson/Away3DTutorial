@@ -2,6 +2,7 @@ package com.makemultimedia.away3d.GameElement
 {
 	import away3d.bounds.BoundingSphere;
 	import away3d.entities.Mesh;
+	import away3d.events.AssetEvent;
 	import away3d.loaders.Loader3D;
 	import away3d.materials.ColorMaterial;
 	import away3d.primitives.SphereGeometry;
@@ -11,6 +12,7 @@ package com.makemultimedia.away3d.GameElement
 	import com.makemultimedia.away3d.Manager.CollisionTypes;
 	import com.makemultimedia.away3d.Manager.EngineManager;
 	import com.makemultimedia.away3d.Manager.EnemyManager;
+	import com.makemultimedia.away3d.Manager.ResourceManager;
 	import flash.events.Event;
 	import flash.geom.Vector3D;
 	/**
@@ -27,14 +29,20 @@ package com.makemultimedia.away3d.GameElement
 		private var model:Loader3D;
 		private var boundingSphere:BoundingSphere;
 		private var removeInNextUpdate:Boolean;		
+		private var radius:Number;
 		
-		public function Enemy(engineManager:EngineManager, collisionManager:CollisionManager, enemyManager:EnemyManager, model:Loader3D, topOfScene:Vector3D) {
+		public function Enemy(engineManager:EngineManager, collisionManager:CollisionManager, enemyManager:EnemyManager, topOfScene:Vector3D) {
 			this.engineManager = engineManager;
 			this.collisionManager = collisionManager;
 			this.enemyManager = enemyManager;
-			this.model = model;
 			this.boundingSphere = new BoundingSphere();
-			this.removeInNextUpdate = false;			
+			this.removeInNextUpdate = false;
+			
+			model = ResourceManager.loadShuttle01(function(event:AssetEvent):void {
+				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
+			});	
+			engineManager.View.scene.addChild(model);
 			
 			collisionManager.addCollider(this);
 			enemyManager.addEnemy(this);
@@ -52,10 +60,7 @@ package com.makemultimedia.away3d.GameElement
 				destroy();
 			} else {			
 				model.y -= MOVE_SPEED;	
-				if (model.numChildren !== 0) {
-					Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
-					boundingSphere.fromSphere(model.position, (Bounds.width / 2 + Bounds.height / 2) / 2);
-				}		
+				boundingSphere.fromSphere(model.position, radius);	
 			}
 		}
 		

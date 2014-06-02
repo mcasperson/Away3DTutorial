@@ -1,5 +1,6 @@
 package com.makemultimedia.away3d.Manager 
 {
+	import away3d.events.AssetEvent;
 	import away3d.extrusions.Elevation;
 	import away3d.extrusions.SkinExtrude;
 	import away3d.loaders.Loader3D;
@@ -38,23 +39,25 @@ package com.makemultimedia.away3d.Manager
 			
 		}
 		
-		public static function loadSpaceFighter01():Loader3D  {
+		public static function loadSpaceFighter01(loadedCallback:Function):Loader3D  {
 			var assetLoaderContext:AssetLoaderContext = new AssetLoaderContext();
 			assetLoaderContext.mapUrlToData("F01_512.JPG", new SpaceFighter01Texture());
 			var loader:Loader3D = new Loader3D();
 			loader.rotationX = -90;
 			loader.scale(0.2);
+			loader.addEventListener(AssetEvent.MESH_COMPLETE, loadedCallback);
 			loader.loadData(new SpaceFighter01Model(), assetLoaderContext, null, new Max3DSParser(false));
 			return loader;
 		}
 		
-		public static function loadShuttle01():Loader3D  {
+		public static function loadShuttle01(loadedCallback:Function):Loader3D  {
 			var assetLoaderContext:AssetLoaderContext = new AssetLoaderContext();
 			assetLoaderContext.mapUrlToData("S01_512.JPG", new Shuttle01Texture());
 			var loader:Loader3D = new Loader3D();
 			loader.rotationX = -90;
 			loader.scale(0.2);
-			loader.loadData(new Shuttle01Model(), assetLoaderContext, null, new Max3DSParser(false));
+			loader.addEventListener(AssetEvent.MESH_COMPLETE, loadedCallback);
+			loader.loadData(new Shuttle01Model(), assetLoaderContext, null, new Max3DSParser(false));			
 			return loader;
 		}
 		

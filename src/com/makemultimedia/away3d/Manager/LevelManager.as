@@ -59,7 +59,7 @@ package com.makemultimedia.away3d.Manager
 			var now:int = new Date().getTime();
 			if (now - timeUntilNextEnemy > ENEMY_CREATE_DELAY) {
 				timeUntilNextEnemy = now;
-				new Enemy(engineManager, collisionManager, enemyManager, ResourceManager.loadShuttle01(), middleTop);
+				new Enemy(engineManager, collisionManager, enemyManager, middleTop);
 			}
 		}
 		
