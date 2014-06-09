@@ -3,8 +3,10 @@ package com.makemultimedia.away3d.Manager
 	import away3d.core.base.CompactSubGeometry;
 	import away3d.entities.Mesh;
 	import away3d.primitives.SphereGeometry;
-	import com.makemultimedia.away3d.GameElement.Collider;
+	import com.makemultimedia.away3d.Event.CollisionEvent;
+	import com.makemultimedia.away3d.Interface.Collider;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.utils.Dictionary;
 	import org.as3commons.collections.framework.ILinkedListIterator;
 	import org.as3commons.collections.LinkedList;
@@ -12,14 +14,14 @@ package com.makemultimedia.away3d.Manager
 	 * ...
 	 * @author Matthew Casperson
 	 */
-	public class CollisionManager 
+	public class CollisionManager extends EventDispatcher
 	{
 		private var engineManager:EngineManager;
 		private var collisionMap:Dictionary;
 		private var colliders:LinkedList;
 		private var debug:Boolean;
 		
-		public function CollisionManager(engineManager:EngineManager, debug:Boolean) {
+		public function CollisionManager(engineManager:EngineManager, debug:Boolean = false) {
 			this.engineManager = engineManager;
 			this.collisionMap =  new Dictionary();
 			this.colliders = new LinkedList();
@@ -32,7 +34,6 @@ package com.makemultimedia.away3d.Manager
 			var iterator1:ILinkedListIterator = colliders.iterator() as ILinkedListIterator;
 			var iterator2:ILinkedListIterator = colliders.iterator() as ILinkedListIterator;
 			
-			outerloop:
 			while (iterator1.hasNext()) {
 				var collider1:Collider = iterator1.next() as Collider;					
 				iterator2.end();
@@ -40,13 +41,12 @@ package com.makemultimedia.away3d.Manager
 					var collider2:Collider = iterator2.previous() as Collider;
 					
 					if (collider1 === collider2) {
-						break outerloop;
+						break;
 					}
 
 					if (collisionMap[collider1.collisionType].indexOf(collider2.collisionType) !== -1) {
 						if (collider1.collisionSphere.overlaps(collider2.collisionSphere)) {
-							collider1.collision(collider2);
-							collider2.collision(collider1);		
+							this.dispatchEvent(new CollisionEvent(collider1, collider2));
 						}
 					}
 				}

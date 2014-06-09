@@ -1,7 +1,7 @@
 package com.makemultimedia.away3d.Level 
 {
 	import away3d.extrusions.Elevation;
-	import com.makemultimedia.away3d.Destroyable;
+	import com.makemultimedia.away3d.Interface.Destroyable;
 	import com.makemultimedia.away3d.Manager.EngineManager;
 	import com.makemultimedia.away3d.Manager.LevelManager;
 	/**

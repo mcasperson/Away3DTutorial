@@ -1,4 +1,4 @@
-package com.makemultimedia.away3d.GameElement 
+package com.makemultimedia.away3d.Interface 
 {
 	import away3d.bounds.BoundingSphere;
 	/**
@@ -8,8 +8,7 @@ package com.makemultimedia.away3d.GameElement
 	public interface Collider 
 	{		
 		function get collisionType():int; 
-		function get collisionSphere():BoundingSphere;
-		function collision(otherCollider:Collider):void;		
+		function get collisionSphere():BoundingSphere;	
 	}
 
 }

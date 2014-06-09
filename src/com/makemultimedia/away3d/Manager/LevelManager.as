@@ -3,7 +3,7 @@ package com.makemultimedia.away3d.Manager
 	import away3d.extrusions.Elevation;
 	import away3d.extrusions.SkinExtrude;
 	import away3d.loaders.Loader3D;
-	import com.makemultimedia.away3d.Destroyable;
+	import com.makemultimedia.away3d.Interface.Destroyable;
 	import com.makemultimedia.away3d.GameElement.Enemy;
 	import com.makemultimedia.away3d.GameElement.Player;
 	import com.makemultimedia.away3d.Level.Level;

@@ -9,7 +9,8 @@ package com.makemultimedia.away3d.GameElement
 	import away3d.materials.ColorMaterial;
 	import away3d.primitives.SphereGeometry;
 	import away3d.tools.utils.Bounds;
-	import com.makemultimedia.away3d.Destroyable;
+	import com.makemultimedia.away3d.Event.CollisionEvent;
+	import com.makemultimedia.away3d.Interface.Destroyable;
 	import com.makemultimedia.away3d.Manager.CollisionManager;
 	import com.makemultimedia.away3d.Manager.CollisionTypes;
 	import com.makemultimedia.away3d.Manager.EngineManager;
@@ -23,55 +24,44 @@ package com.makemultimedia.away3d.GameElement
 	 * ...
 	 * @author Matthew Casperson
 	 */
-	public class Player implements Destroyable, Collider
+	public class Player extends CollisionGameElement
 	{
 		private static const MOVEMENT_SPEED:Number = 3;
-		private var engineManager:EngineManager;
-		private var collisionManager:CollisionManager;
-		private var levelManager:LevelManager;
 		private var model:Loader3D;
-		private var boundingSphere:BoundingSphere;
-		private var radius:Number;
 		
 		public function Player(engineManager:EngineManager, levelManager:LevelManager, collisionManager:CollisionManager) 
-		{
-			this.engineManager = engineManager;
-			this.collisionManager = collisionManager;
-			this.levelManager = levelManager;
-			this.boundingSphere = new BoundingSphere();
-			
-			collisionManager.addCollider(this);
-			levelManager.addDestroyable(this);
+		{			
+			super(engineManager, levelManager, collisionManager, CollisionTypes.PLAYER_COLLISION_TYPE);
 			
 			model = ResourceManager.loadSpaceFighter01(function(event:AssetEvent):void {
 				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
 				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
 			});	
-			engineManager.View.scene.addChild(model);
+			MyEngineManager.View.scene.addChild(model);
 							
-			engineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			engineManager.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			engineManager.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			engineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
+			MyEngineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			MyEngineManager.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			MyEngineManager.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			MyEngineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
 		}
 		
 		private function onEnterFrame(event:Event):void {
-			boundingSphere.fromSphere(model.position, radius);
+			MyBoundingSphere.fromSphere(model.position, radius);
 		}
 		
-		public function destroy():void {
-			engineManager.View.scene.removeChild(model);
-			collisionManager.removeCollider(this);
-			levelManager.removeDestroyable(this);
+		public override function destroy():void {
+			super.destroy();
 			
-			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
-			engineManager.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-			engineManager.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			engineManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			MyEngineManager.View.scene.removeChild(model);			
+			
+			MyEngineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			MyEngineManager.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			MyEngineManager.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+			MyEngineManager.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
 		private function onMouseDown(event:MouseEvent):void { 
-			
+			new Projectile(MyEngineManager, MyLevelManager, MyCollisionManager, model.position);
 		}
 		
 		private function onMouseUp(event:MouseEvent):void { 
@@ -79,23 +69,11 @@ package com.makemultimedia.away3d.GameElement
 		}
 		
 		private function onMouseMove(event:MouseEvent):void { 
-			var screenPos:Vector3D = engineManager.View.camera.unproject(
-				(event.stageX / engineManager.width) * 2 - 1, 
-				(event.stageY / engineManager.height) * 2 - 1, 
-				model.z - engineManager.View.camera.z);
+			var screenPos:Vector3D = MyEngineManager.View.camera.unproject(
+				(event.stageX / MyEngineManager.width) * 2 - 1, 
+				(event.stageY / MyEngineManager.height) * 2 - 1, 
+				model.z - MyEngineManager.View.camera.z);
 			model.position = screenPos;	
-		}
-		
-		public function get collisionType():int {
-			return CollisionTypes.PLAYER_COLLISION_TYPE;
-		}
-		
-		public function get collisionSphere():BoundingSphere {					
-			return boundingSphere;
-		}
-		
-		public function collision(otherCollider:Collider):void {
-			
 		}
 	}
 

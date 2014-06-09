@@ -1,6 +1,6 @@
 package com.makemultimedia.away3d.Level 
 {
-	import com.makemultimedia.away3d.Destroyable;
+	import com.makemultimedia.away3d.Interface.Destroyable;
 	import com.makemultimedia.away3d.Manager.EngineManager;
 	import com.makemultimedia.away3d.Manager.LevelManager;
 	import flash.geom.Vector3D;
