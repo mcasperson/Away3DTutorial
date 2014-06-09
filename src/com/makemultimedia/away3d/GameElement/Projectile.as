@@ -25,11 +25,16 @@ package com.makemultimedia.away3d.GameElement
 		public function Projectile(engineManager:EngineManager, levelManager:LevelManager, collisionManager:CollisionManager, position:Vector3D) 
 		{
 			super(engineManager, levelManager, collisionManager, CollisionTypes.PLAYER_PROJECTILE_COLLISION_TYPE);
+			this.radius = SIZE;
+			
 			MyEngineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);	
+			
+			MyCollisionManager.addCollider(this);
 			MyCollisionManager.addEventListener(CollisionEvent.COLLISION_EVENT, onCollision);
+			MyBoundingSphere.fromSphere(position, radius);
 			
 			var material:ColorMaterial = new ColorMaterial(COLOUR);
-			model = new Mesh(new SphereGeometry(SIZE), material);
+			model = new Mesh(new SphereGeometry(radius), material);
 			model.position = position;
 			MyEngineManager.View.scene.addChild(model);
 		}
@@ -46,7 +51,7 @@ package com.makemultimedia.away3d.GameElement
 				destroy();
 			} else {			
 				model.y += MOVE_SPEED;	
-				MyBoundingSphere.fromSphere(model.position, SIZE);	
+				MyBoundingSphere.fromSphere(model.position, radius);	
 			}
 		}
 		

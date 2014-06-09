@@ -33,16 +33,21 @@ package com.makemultimedia.away3d.GameElement
 		{			
 			super(engineManager, levelManager, collisionManager, CollisionTypes.PLAYER_COLLISION_TYPE);
 			
-			model = ResourceManager.loadSpaceFighter01(function(event:AssetEvent):void {
-				Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
-				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
-			});	
+			model = ResourceManager.loadSpaceFighter01(onMeshLoad);		
+		}
+		
+		private function onMeshLoad(event:AssetEvent):void {
+			Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+			radius = (Bounds.width / 2 + Bounds.height / 2) / 2;										
 			MyEngineManager.View.scene.addChild(model);
-							
+			
+			MyBoundingSphere.fromSphere(model.position, radius);
+			MyCollisionManager.addCollider(this);
+						
 			MyEngineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			MyEngineManager.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			MyEngineManager.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			MyEngineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);		
+			MyEngineManager.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
 		}
 		
 		private function onEnterFrame(event:Event):void {

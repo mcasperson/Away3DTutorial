@@ -25,21 +25,28 @@ package com.makemultimedia.away3d.GameElement
 		private static const MOVE_SPEED:Number = 2;
 		private static const X_AXIS_VARIATION:Number = 200;
 		private var model:Loader3D;
+		private var topOfScene:Vector3D;
 		
 		public function Enemy(engineManager:EngineManager, collisionManager:CollisionManager, levelManager:LevelManager, topOfScene:Vector3D) {
-			super(engineManager, levelManager, collisionManager, CollisionTypes.ENEMY_COLLISION_TYPE);
+			super(engineManager, levelManager, collisionManager, CollisionTypes.ENEMY_COLLISION_TYPE);	
+			this.topOfScene = topOfScene;
+			model = ResourceManager.loadShuttle01(onMeshLoad);	
+		}
+		
+		private function onMeshLoad(event:AssetEvent):void {
+			//Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
+			Bounds.getMeshBounds(Mesh(event.asset));
+			radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
 			
-			model = ResourceManager.loadShuttle01(function(event:AssetEvent):void {
-				//Bounds.getMeshBounds(Mesh(model.getChildAt(0)));
-				Bounds.getMeshBounds(Mesh(event.asset));
-				radius = (Bounds.width / 2 + Bounds.height / 2) / 2;
-			});	
-			model.y = topOfScene.y;
+			model.y = topOfScene.y + Bounds.height;
 			model.x += (Math.random() * 2 - 1) * X_AXIS_VARIATION;
 			MyEngineManager.View.scene.addChild(model);
 			
+			MyBoundingSphere.fromSphere(model.position, radius);
+			
+			MyCollisionManager.addCollider(this);
+			MyCollisionManager.addEventListener(CollisionEvent.COLLISION_EVENT, onCollision);				
 			MyEngineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);	
-			MyCollisionManager.addEventListener(CollisionEvent.COLLISION_EVENT, onCollision);
 		}
 		
 		private function onEnterFrame(event:Event):void {

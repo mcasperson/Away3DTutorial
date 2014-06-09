@@ -12,8 +12,8 @@ package com.makemultimedia.away3d.GameElement
 	public class CollisionGameElement extends GameElement implements Collider
 	{
 		private var collisionManager:CollisionManager;
-		private var boundingSphere:BoundingSphere;
 		private var myCollisionType:int;
+		private var boundingSphere:BoundingSphere;
 		protected var radius:Number;
 		protected var removeInNextUpdate:Boolean;
 		
@@ -29,11 +29,9 @@ package com.makemultimedia.away3d.GameElement
 		{
 			super(engineManager, levelManager);
 			this.collisionManager = collisionManager;
-			this.myCollisionType = myCollisionType;
-			this.boundingSphere = new BoundingSphere();
+			this.myCollisionType = myCollisionType;			
 			this.removeInNextUpdate = false;
-			
-			collisionManager.addCollider(this);
+			this.boundingSphere = new BoundingSphere();			
 		}
 		
 		public override function destroy():void {

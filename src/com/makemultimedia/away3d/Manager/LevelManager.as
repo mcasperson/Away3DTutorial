@@ -40,7 +40,7 @@ package com.makemultimedia.away3d.Manager
 			
 			this.player = new Player(engineManager, this, collisionManager);	
 			this.middleBottom = engineManager.View.camera.unproject(0, 1, ELEVATION_DIST - engineManager.View.camera.z);
-			this.middleTop = engineManager.View.camera.unproject(0, -1, ELEVATION_DIST - engineManager.View.camera.z);
+			this.middleTop = engineManager.View.camera.unproject(0, -1, -engineManager.View.camera.z);
 			this.timeUntilNextEnemy = new Date().getTime();
 			
 			engineManager.addEventListener(Event.ENTER_FRAME, onEnterFrame);			
