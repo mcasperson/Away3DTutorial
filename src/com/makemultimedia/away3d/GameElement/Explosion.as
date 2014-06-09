@@ -47,6 +47,8 @@ package com.makemultimedia.away3d.GameElement
 			MyEngineManager.View.scene.addChild(mesh);
 			
 			spriteSheetAnimator.addEventListener(AnimatorEvent.CYCLE_COMPLETE, animationFinished);
+			
+			ResourceManager.loadExplosion().play();
 		}
 		
 		private function animationFinished(event:AnimatorEvent):void {			

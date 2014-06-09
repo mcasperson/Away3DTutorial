@@ -10,6 +10,7 @@ package com.makemultimedia.away3d.Manager
 	import com.makemultimedia.away3d.Level.LevelBackgroundElevation;
 	import flash.events.Event;
 	import flash.geom.Vector3D;
+	import flash.media.SoundMixer;
 	import org.as3commons.collections.LinkedList;
 	/**
 	 * ...
@@ -72,6 +73,8 @@ package com.makemultimedia.away3d.Manager
 			}
 			
 			engineManager.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
+			SoundMixer.stopAll();
 		}
 		
 		public function addDestroyable(destroyable:Destroyable):void {

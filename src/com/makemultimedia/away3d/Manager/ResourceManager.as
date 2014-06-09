@@ -10,6 +10,7 @@ package com.makemultimedia.away3d.Manager
 	import away3d.textures.BitmapTexture;
 	import away3d.utils.Cast;
 	import flash.display.BitmapData;
+	import flash.media.Sound;
 	/**
 	 * ...
 	 * @author Matthew Casperson
@@ -58,6 +59,9 @@ package com.makemultimedia.away3d.Manager
 		[Embed(source="media/island_height.gif")]
 		public static var IslandHeight:Class;
 		
+		[Embed(source = "media/DeathFlash.mp3")]
+		public static var ExplosionSound:Class;
+		
 		public function ResourceManager() 
 		{
 			
@@ -97,6 +101,10 @@ package com.makemultimedia.away3d.Manager
 			elevation.rotationX = -90;				
 			 
 			return elevation;
+		}
+		
+		public static function loadExplosion():Sound {
+			return new ExplosionSound() as Sound;			
 		}
 	}
 }
